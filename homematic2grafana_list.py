@@ -26,11 +26,13 @@ print("Measurements:")
 for measurement in measurements:
     m_name = measurement['name']
     sum_values = client.query("SELECT count(*) as sum_count FROM " + m_name).get_points()
+    sum_measurements_temp = 0
     for point in sum_values:
         for value in point:
             if "sum_count" in value:
-                print("  " + str(m_name) + ", Points: " + str(point[value]))
-                sum_measurements += point[value]
+                sum_measurements_temp += point[value]
+    print("  " + str(m_name) + ", Points: " + str(sum_measurements_temp))
+    sum_measurements += sum_measurements_temp
     if args.fields:
         fields = client.query("SHOW FIELD KEYS FROM " + m_name).get_points()
         for field in fields:
