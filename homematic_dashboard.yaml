@@ -1,0 +1,14 @@
+apiVersion: 1
+
+providers:
+  - name: 'Homematic'
+    orgId: 1
+    folder: 'Homematic'
+    folderUid: 'Homematic'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 60
+    allowUiUpdates: True
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false

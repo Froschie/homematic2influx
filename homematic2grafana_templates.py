@@ -32,13 +32,17 @@ def dashboard_target(name, measurement, fields):
 
 def dashboard_json(name, targets, **kwargs):
     # default values
-    yaxe1_format='short'
-    yaxe2_format='short'
-    panel_bars=False
-    panel_lines=True
+    dv = {
+        'yaxe1_format': 'short',
+        'yaxe2_format': 'short',
+        'panel_bars': False,
+        'panel_lines': True,
+        'panel_stack': False,
+        'panel_steppedLine': False
+    }
     # take values from arguments
     for key, value in kwargs.items():
-        key = value
+        dv[key] = value
     return {
         "annotations": {
             "list": [
@@ -60,7 +64,7 @@ def dashboard_json(name, targets, **kwargs):
         "panels": [
             {
                 "aliasColors": {},
-                "bars": panel_bars,
+                "bars": dv['panel_bars'],
                 "dashLength": 10,
                 "dashes": False,
                 "datasource": "inf_homematic",
@@ -89,7 +93,7 @@ def dashboard_json(name, targets, **kwargs):
                     "total": False,
                     "values": False
                 },
-                "lines": panel_lines,
+                "lines": dv['panel_lines'],
                 "linewidth": 1,
                 "NonePointMode": "None",
                 "options": {
@@ -102,8 +106,8 @@ def dashboard_json(name, targets, **kwargs):
                 "renderer": "flot",
                 "seriesOverrides": [],
                 "spaceLength": 10,
-                "stack": False,
-                "steppedLine": False,
+                "stack": dv['panel_stack'],
+                "steppedLine": dv['panel_steppedLine'],
                 "targets": targets,
                 "thresholds": [],
                 "timeFrom": None,
@@ -125,7 +129,7 @@ def dashboard_json(name, targets, **kwargs):
                 },
                 "yaxes": [
                     {
-                        "format": yaxe1_format,
+                        "format": dv['yaxe1_format'],
                         "label": None,
                         "logBase": 1,
                         "max": None,
@@ -133,7 +137,7 @@ def dashboard_json(name, targets, **kwargs):
                         "show": True
                     },
                     {
-                        "format": yaxe2_format,
+                        "format": dv['yaxe2_format'],
                         "label": None,
                         "logBase": 1,
                         "max": None,

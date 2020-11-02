@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import time
 import os
 from datetime import datetime
-import requests
 from influxdb import InfluxDBClient
 from pathlib import Path
 import json
@@ -16,13 +14,8 @@ influx_user = os.environ['influx_user']
 influx_pw = os.environ['influx_pw']
 influx_db = os.environ['influx_db']
 
-print(datetime.now(), "starting...")
-time_start = datetime.now()
-
 client = InfluxDBClient(host=influx_ip, port=influx_port, username=influx_user, password=influx_pw)
 client.switch_database(influx_db)
-
-print(datetime.now(), "connected...")
 
 dashboard_values = {
     'OPERATING_VOLTAGE': {},
@@ -33,7 +26,7 @@ dashboard_values = {
     'DUTYCYCLE': {},
     'DUTY_CYCLE': {},
     'HUMIDITY': {},
-    'MOTION': { 'panel_bars': True, 'panel_lines': False },
+    'MOTION': { 'panel_steppedLine': True },
     'TEMPERATURE': { 'yaxe1_format': 'celsius'},
     'WINDOW_STATE': {}
 }
@@ -72,7 +65,3 @@ for measurement in measurements:
             f.close()
             print(datetime.now(), "File \"" + filename + "\" written.")
 client.close()
-
-print(datetime.now(), "finished...")
-time_end = datetime.now()
-print("duration: ", time_end-time_start)

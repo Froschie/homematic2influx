@@ -20,6 +20,7 @@ ADD ./homematic.py /homematic.py
 RUN chmod +x /homematic.py
 RUN dos2unix /homematic.py
 RUN mkdir /grafana_dashboards
+ADD ./homematic2grafana_list.py /homematic2grafana_list.py
 ADD ./homematic2grafana.py /homematic2grafana.py
 ADD ./homematic2grafana_templates.py /homematic2grafana_templates.py
 
