@@ -7,6 +7,8 @@ from influxdb import InfluxDBClient
 from pathlib import Path
 import json
 from  homematic2grafana_templates import dashboard_json, dashboard_target
+from homematic_ignores import *
+from homematic2grafana_dashboardconfig import *
 
 influx_ip = os.environ['influx_ip']
 influx_port = os.environ['influx_port']
@@ -17,20 +19,6 @@ influx_db = os.environ['influx_db']
 client = InfluxDBClient(host=influx_ip, port=influx_port, username=influx_user, password=influx_pw)
 client.switch_database(influx_db)
 
-dashboard_values = {
-    'OPERATING_VOLTAGE': {},
-    'LOWBAT': {},
-    'ACTUAL_HUMIDITY': {},
-    'ACTUAL_TEMPERATURE': {},
-    'BATTERY_STATE': { 'yaxe1_format': 'volt'},
-    'DUTYCYCLE': {},
-    'DUTY_CYCLE': {},
-    'HUMIDITY': {},
-    'MOTION': { 'panel_steppedLine': True },
-    'TEMPERATURE': { 'yaxe1_format': 'celsius'},
-    'WINDOW_STATE': {}
-}
-
 output_dir = "./grafana_dashboards"
 if not Path(output_dir).is_dir():
     os.mkdir(output_dir)
@@ -39,6 +27,8 @@ if not Path(output_dir).is_dir():
 measurements = client.get_list_measurements()
 for measurement in measurements:
     m_name = measurement['name']
+    if m_name in ignore_states:
+        continue
     sum_values = client.query("SELECT count(*) as sum_count FROM " + m_name).get_points()
     for point in sum_values:
         for value in point:

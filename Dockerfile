@@ -17,12 +17,14 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # Copy Scriptis to Container
 ADD ./homematic.py /homematic.py
+ADD ./homematic_ignores.py /homematic_ignores.py
 RUN chmod +x /homematic.py
 RUN dos2unix /homematic.py
 RUN mkdir /grafana_dashboards
 ADD ./homematic2grafana_list.py /homematic2grafana_list.py
 ADD ./homematic2grafana.py /homematic2grafana.py
 ADD ./homematic2grafana_templates.py /homematic2grafana_templates.py
+ADD ./homematic2grafana_dashboardconfig.py /homematic2grafana_dashboardconfig.py
 
 # Default Command for starting the Container
 CMD ["/homematic.py"]

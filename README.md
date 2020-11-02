@@ -42,9 +42,11 @@ mkdir homematic-query
 cd homematic-query/
 curl -O https://raw.githubusercontent.com/Froschie/homematic2influx/main/Dockerfile
 curl -O https://raw.githubusercontent.com/Froschie/homematic2influx/main/homematic.py
+curl -O https://raw.githubusercontent.com/Froschie/homematic2influx/main/homematic_ignores.py
 curl -O https://raw.githubusercontent.com/Froschie/homematic2influx/main/homematic2grafana.py
 curl -O https://raw.githubusercontent.com/Froschie/homematic2influx/main/homematic2grafana_templates.py
 curl -O https://raw.githubusercontent.com/Froschie/homematic2influx/main/homematic2grafana_list.py
+curl -O https://raw.githubusercontent.com/Froschie/homematic2influx/main/homematic2grafana_dashboardconfig.py
 docker build --tag homematic-query .
 ```
 

@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import requests
 import xml.etree.ElementTree as ET
 from influxdb import InfluxDBClient
+from homematic_ignores import *
 
 influx_ip = os.environ['influx_ip']
 influx_port = os.environ['influx_port']
@@ -50,11 +51,6 @@ def influx_json(node_type_meas, dev_type, node_timestamp, dev_name, node_type, n
 def ceil_time(ct, delta):
     return ct + (datetime.min - ct) % delta
 
-environment_sensors = ["HmIP-STHD", "HmIP-STHO", "HmIP-SLO", "HM-WDS30-OT2-SM-2", "HM-TC-IT-WM-W-EU"]
-switch_sensors = ["HM-LC-Sw1PBU-FM", "HM-LC-Bl1PBU-FM", "HM-LC-Sw1-FM", "HM-PB-2-WM55-2", "HM-PB-2-FM", "HM-RC-2-PBU-FM", "HM-LC-Dim1TPBU-FM", "HM-LC-Sw4-SM", "HM-RC-4-3", "HM-LC-Dim1PWM-CV", "HM-SwI-3-FM", "HM-ES-PMSw1-Pl", "HM-LC-Sw1-Pl-2"]
-motion_sensors = ["HM-Sen-MDIR-WM55", "HM-Sen-MDIR-O-2", "HM-Sec-MDIR-2"]
-security_sensors = ["HM-Sec-SCo", "HM-Sec-WDS-2", "HM-Sec-SC-2", "HmIP-SCI", "HmIP-SWDO-I"]
-
 client = InfluxDBClient(host=influx_ip, port=influx_port, username=influx_user, password=influx_pw)
 client.switch_database(influx_db)
 
@@ -79,7 +75,7 @@ try:
                 dev_type = devices[dev.attrib['ise_id']]['device_type']
             else:
                 continue
-            if dev_type in environment_sensors or dev_type in switch_sensors or dev_type in motion_sensors or dev_type in security_sensors:
+            if dev_type not in ignore_devices:
             #if dev.attrib['device_type'] in test_sensor:
                 #print(dev.tag, dev.attrib)
                 for node in dev.iter():
@@ -90,7 +86,7 @@ try:
                         else:
                             node_type = node.attrib['type']
                         #print(node.tag, node.attrib['type'], value(node.attrib['value'], node.attrib['valuetype']), node.attrib['timestamp'])
-                        if int(node.attrib['timestamp']) > 0:
+                        if int(node.attrib['timestamp']) > 0 and node.attrib['type'] not in ignore_states:
                             json_body.append(influx_json(node.attrib['type'], dev_type, node.attrib['timestamp'], dev.attrib['name'], node_type, node.attrib['value'], node.attrib['valuetype']))
 
         influx_result = client.write_points(json_body, time_precision='s')
