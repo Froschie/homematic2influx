@@ -2,7 +2,6 @@
 ignore_states = []
 ignore_states.append('ACTIVE_PROFILE')
 ignore_states.append('ACTUAL_HUMIDITY')
-ignore_states.append('ACTUAL_TEMPERATURE')
 ignore_states.append('ACTUAL_TEMPERATURE_STATUS')
 ignore_states.append('AVERAGE_ILLUMINATION_STATUS')
 ignore_states.append('BOOST_MODE')
@@ -29,6 +28,10 @@ ignore_states.append('PARTY_STOP_TIME')
 ignore_states.append('PARTY_STOP_YEAR')
 ignore_states.append('PARTY_TEMPERATURE')
 ignore_states.append('SET_TEMPERATURE')
+ignore_states.append('SET_POINT_MODE')
+ignore_states.append('SET_POINT_TEMPERATURE')
+ignore_states.append('FROST_PROTECTION')
+ignore_states.append('WINDOW_OPEN_REPORTING')
 
 
 # Homematic Devices which will be ignored and not written to Influx DB
@@ -42,7 +45,7 @@ ignore_devices.append('HM-WDS10-TH-O')
 meas_config = {}
 #meas_config['ACTIVE_PROFILE'] = {}
 #meas_config['ACTUAL_HUMIDITY'] = { 'meas_remap': 'HUMIDITY', 'field_remap': {'ACTUAL_HUMIDITY_2': 'HUMIDITY_1'}}
-#meas_config['ACTUAL_TEMPERATURE'] = {}
+meas_config['ACTUAL_TEMPERATURE'] = {}
 #meas_config['ACTUAL_TEMPERATURE_STATUS'] = {}
 meas_config['AVERAGE_ILLUMINATION'] = {}
 #meas_config['AVERAGE_ILLUMINATION_STATUS'] = {}
@@ -68,7 +71,7 @@ meas_config['ERROR_OVERHEAT'] = {}
 meas_config['ERROR_OVERLOAD'] = {}
 meas_config['ERROR_REDUCED'] = {}
 meas_config['FREQUENCY'] = {}
-meas_config['FROST_PROTECTION'] = {}
+#meas_config['FROST_PROTECTION'] = {}
 meas_config['HEATING_COOLING'] = {}
 meas_config['HIGHEST_ILLUMINATION'] = {}
 #meas_config['HIGHEST_ILLUMINATION_STATUS'] = {}
@@ -101,8 +104,8 @@ meas_config['QUICK_VETO_TIME'] = {}
 meas_config['RSSI_DEVICE'] = {}
 meas_config['RSSI_PEER'] = {}
 meas_config['SABOTAGE'] = {}
-meas_config['SET_POINT_MODE'] = {}
-meas_config['SET_POINT_TEMPERATURE'] = {}
+#meas_config['SET_POINT_MODE'] = {}
+#meas_config['SET_POINT_TEMPERATURE'] = {}
 #meas_config['SET_TEMPERATURE'] = {}
 meas_config['STATE'] = {}
 meas_config['STICKY_UNREACH'] = {}
@@ -112,5 +115,5 @@ meas_config['TEMPERATURE_OUT_OF_RANGE'] = {}
 meas_config['UNREACH'] = {}
 meas_config['UPDATE_PENDING'] = {}
 meas_config['VOLTAGE'] = {}
-meas_config['WINDOW_OPEN_REPORTING'] = {}
+#meas_config['WINDOW_OPEN_REPORTING'] = {}
 meas_config['WINDOW_STATE'] = {}

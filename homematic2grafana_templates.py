@@ -1,7 +1,11 @@
-def dashboard_fields(fields):
+def dashboard_fields(client, fields, measurement, name):
     temp_fields = []
     for field in fields:
-        temp_fields.append([
+        sum_values = client.query("SELECT count(" + field + ") as sum_count FROM " + measurement + " WHERE (\"name\" = '" + name  + "')").get_points()
+        for point in sum_values:
+            for value in point:
+                if "sum_count" in value:
+                    temp_fields.append([
             {
                 "params": [
                     field
@@ -11,7 +15,7 @@ def dashboard_fields(fields):
         ])
     return temp_fields
 
-def dashboard_target(name, measurement, fields):
+def dashboard_target(client, name, measurement, fields):
     return {
                 "alias": name,
                 "groupBy": [],
@@ -19,7 +23,7 @@ def dashboard_target(name, measurement, fields):
                 "orderByTime": "ASC",
                 "policy": "default",
                 "resultFormat": "time_series",
-                "select": dashboard_fields(fields),
+                "select": dashboard_fields(client, fields, measurement, name),
                 "tags": [
                     {
                         "key": "name",

@@ -7,7 +7,7 @@ from influxdb import InfluxDBClient
 from pathlib import Path
 import json
 from  homematic2grafana_templates import dashboard_json, dashboard_target
-from homematic_config import *
+from homematic_config import meas_config
 from homematic2grafana_dashboardconfig import *
 
 influx_ip = os.environ['influx_ip']
@@ -44,7 +44,7 @@ for measurement in measurements:
             targets = []
             for entry in entries:
                 #print(entry['value'])
-                targets.append(dashboard_target(entry['value'], m_name, fields))
+                targets.append(dashboard_target(client, entry['value'], m_name, fields))
             filename = m_name + ".json"
             f = open(output_dir + "/" + filename, "w")
             kwargs = {}
