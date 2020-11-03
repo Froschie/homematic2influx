@@ -16,7 +16,7 @@ Example output:
 2020-11-02 13:00:00.000000 File "influxdb_homematic.yaml" written.
 ```
 
-Example *influxdb_homematic.yaml* file:
+Example of generated Grafana Data Source provisioning file *influxdb_homematic.yaml*:
 ```yaml
 apiVersion: 1
 datasources:

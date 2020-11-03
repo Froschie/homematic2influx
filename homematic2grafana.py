@@ -7,7 +7,7 @@ from influxdb import InfluxDBClient
 from pathlib import Path
 import json
 from  homematic2grafana_templates import dashboard_json, dashboard_target
-from homematic_ignores import *
+from homematic_config import *
 from homematic2grafana_dashboardconfig import *
 
 influx_ip = os.environ['influx_ip']

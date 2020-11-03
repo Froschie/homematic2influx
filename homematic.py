@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import requests
 import xml.etree.ElementTree as ET
 from influxdb import InfluxDBClient
-from homematic_ignores import *
+from homematic_config import *
 
 influx_ip = os.environ['influx_ip']
 influx_port = os.environ['influx_port']
@@ -80,14 +80,21 @@ try:
                 #print(dev.tag, dev.attrib)
                 for node in dev.iter():
                     if node.tag == "datapoint":
+                        n_type = node.attrib['type']
                         channel_no = node.attrib['name'].split(":")[1].split(".")[0]
                         if int(channel_no) > 0:
-                            node_type = node.attrib['type'] + "_" + str(channel_no)
+                            node_type = n_type + "_" + str(channel_no)
                         else:
-                            node_type = node.attrib['type']
+                            node_type = n_type
                         #print(node.tag, node.attrib['type'], value(node.attrib['value'], node.attrib['valuetype']), node.attrib['timestamp'])
-                        if int(node.attrib['timestamp']) > 0 and node.attrib['type'] not in ignore_states:
-                            json_body.append(influx_json(node.attrib['type'], dev_type, node.attrib['timestamp'], dev.attrib['name'], node_type, node.attrib['value'], node.attrib['valuetype']))
+                        if int(node.attrib['timestamp']) > 0 and n_type not in ignore_states:
+                            if n_type in meas_config:
+                                if 'meas_remap' in meas_config[n_type]:
+                                    n_type = meas_config[n_type]['meas_remap']
+                                if 'field_remap' in meas_config[n_type]:
+                                    if node_type in meas_config[n_type]['field_remap']:
+                                        node_type = meas_config[n_type]['field_remap'][node_type]
+                            json_body.append(influx_json(n_type, dev_type, node.attrib['timestamp'], dev.attrib['name'], node_type, node.attrib['value'], node.attrib['valuetype']))
 
         influx_result = client.write_points(json_body, time_precision='s')
         if influx_result:

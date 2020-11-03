@@ -17,7 +17,7 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # Copy Scriptis to Container
 ADD ./homematic.py /homematic.py
-ADD ./homematic_ignores.py /homematic_ignores.py
+ADD ./homematic_config.py /homematic_config.py
 RUN chmod +x /homematic.py
 RUN dos2unix /homematic.py
 RUN mkdir /grafana_dashboards
