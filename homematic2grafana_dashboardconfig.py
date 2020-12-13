@@ -74,3 +74,4 @@ dashboard_values['UPDATE_PENDING'] = {}
 dashboard_values['VOLTAGE'] = {}
 dashboard_values['WINDOW_OPEN_REPORTING'] = {}
 dashboard_values['WINDOW_STATE'] = {}
+#dashboard_values['SYSTEM_VARS'] = {}

@@ -21,16 +21,19 @@ url = "http://" + hm_ip + "/addons/xmlapi/"
 
 def value(value, type):
     if int(type) == 16:
-        return int(value)
+        # change to float
+        return float(value)
     elif int(type) == 4 or int(type) == 6:
         return float(value)
     elif int(type) == 8:
-        return int(value)
+        # change to float
+        return float(value)
     elif int(type) == 2:
+        # change bool value to float
         if str(value) == "false":
-            return int(0)
+            return float(0)
         else:
-            return int(1)
+            return float(1)
     else:
         return str(value)
 
@@ -95,6 +98,12 @@ try:
                                     if node_type in meas_config[n_type]['field_remap']:
                                         node_type = meas_config[n_type]['field_remap'][node_type]
                             json_body.append(influx_json(n_type, dev_type, node.attrib['timestamp'], dev.attrib['name'], node_type, node.attrib['value'], node.attrib['valuetype']))
+
+        sysvar_list = ET.fromstring(requests.get(url + 'sysvarlist.cgi').text)
+        sysvars = {}
+        for sysvar in sysvar_list:
+            if int(sysvar.attrib['timestamp']) > 1000000000:
+                json_body.append(influx_json("SYSTEM_VARS", "systemVariable", sysvar.attrib['timestamp'], sysvar.attrib['name'], sysvar.attrib['name'].replace(" ", "_"), sysvar.attrib['value'], sysvar.attrib['type']))
 
         influx_result = client.write_points(json_body, time_precision='s')
         if influx_result:
